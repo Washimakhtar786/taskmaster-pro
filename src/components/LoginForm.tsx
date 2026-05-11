@@ -2,6 +2,8 @@ import React from "react";
 
 import { useForm } from "react-hook-form";
 
+import { useNavigate, Link } from "react-router-dom";
+
 import { useAuth } from "../contexts/AuthContext";
 
 interface LoginFormInputs {
@@ -9,62 +11,115 @@ interface LoginFormInputs {
   password: string;
 }
 
-export const LoginForm: React.FC = () => {
-  const { login } = useAuth();
+export const LoginForm: React.FC =
+  () => {
+    const { login } = useAuth();
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm<LoginFormInputs>();
+    const navigate =
+      useNavigate();
 
-  const onSubmit = async (
-    data: LoginFormInputs
-  ) => {
-    try {
-      await login(
-        data.email,
-        data.password
-      );
+    const {
+      register,
+      handleSubmit,
+      formState: { errors },
+    } = useForm<LoginFormInputs>();
 
-      alert("Logged in successfully");
+    const onSubmit = async (
+      data: LoginFormInputs
+    ) => {
+      try {
+        await login(
+          data.email,
+          data.password
+        );
 
-      reset();
-    } catch (error) {
-      alert(
-        "Login failed: " +
-          (error as Error).message
-      );
-    }
+        navigate("/dashboard");
+      } catch (error) {
+        alert(
+          "Login failed: " +
+            (error as Error)
+              .message
+        );
+      }
+    };
+
+    return (
+      <form
+        onSubmit={handleSubmit(
+          onSubmit
+        )}
+        className="space-y-6"
+      >
+
+        {/* Email */}
+        <div>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            {...register("email", {
+              required:
+                "Email is required",
+            })}
+            className="w-full bg-white/10 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-gray-400 outline-none focus:border-green-400"
+          />
+
+          {errors.email && (
+            <p className="text-red-400 text-sm mt-2">
+              {
+                errors.email
+                  .message
+              }
+            </p>
+          )}
+        </div>
+
+        {/* Password */}
+        <div>
+          <input
+            type="password"
+            placeholder="Enter your password"
+            {...register(
+              "password",
+              {
+                required:
+                  "Password is required",
+              }
+            )}
+            className="w-full bg-white/10 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-gray-400 outline-none focus:border-green-400"
+          />
+
+          {errors.password && (
+            <p className="text-red-400 text-sm mt-2">
+              {
+                errors.password
+                  .message
+              }
+            </p>
+          )}
+        </div>
+
+        {/* Button */}
+        <button
+          type="submit"
+          className="w-full bg-green-400 text-black font-bold py-4 rounded-xl hover:bg-green-300 transition"
+        >
+          Login
+        </button>
+
+        {/* Register */}
+        <p className="text-gray-300 text-center">
+
+          Don't have an account?{" "}
+
+          <Link
+            to="/register"
+            className="text-green-400 hover:underline"
+          >
+            Register
+          </Link>
+
+        </p>
+
+      </form>
+    );
   };
-
-  return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <div>
-        <label>Email</label>
-
-        <input
-          type="email"
-          placeholder="Enter email"
-          {...register("email")}
-        />
-      </div>
-
-      <div>
-        <label>Password</label>
-
-        <input
-          type="password"
-          placeholder="Enter password"
-          {...register("password")}
-        />
-      </div>
-
-      <button type="submit">
-        Login
-      </button>
-    </form>
-  );
-};

@@ -1,4 +1,5 @@
 import React from "react";
+import { Navbar } from "../components/Navbar";
 
 import { useAuth } from "../contexts/AuthContext";
 
@@ -8,7 +9,10 @@ export const DashboardPage: React.FC =
       useAuth();
 
     return (
+
       <div>
+
+        <Navbar />
         <h1>Dashboard</h1>
 
         <p>
