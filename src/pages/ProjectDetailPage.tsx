@@ -27,8 +27,8 @@ interface Task {
     | "completed";
 }
 
-export const ProjectDetailPage:
-  React.FC = () => {
+export const ProjectDetailPage: React.FC =
+  () => {
     const { projectId } =
       useParams<{
         projectId: string;
@@ -42,7 +42,6 @@ export const ProjectDetailPage:
 
       const q = query(
         collection(db, "tasks"),
-
         where(
           "projectId",
           "==",
@@ -54,26 +53,18 @@ export const ProjectDetailPage:
         onSnapshot(
           q,
           (snapshot) => {
-            const data =
+            const tasksData =
               snapshot.docs.map(
                 (doc) =>
                   doc.data() as Task
               );
 
-            setTasks(data);
+            setTasks(tasksData);
           }
         );
 
       return () => unsubscribe();
     }, [projectId]);
-
-    if (!projectId) {
-      return (
-        <div className="min-h-screen flex items-center justify-center bg-[#071B2A] text-white">
-          Project Not Found
-        </div>
-      );
-    }
 
     const totalTasks =
       tasks.length;
@@ -102,10 +93,8 @@ export const ProjectDetailPage:
     return (
       <div className="flex min-h-screen bg-[#071B2A] text-white">
 
-        {/* Sidebar */}
         <Sidebar />
 
-        {/* Main */}
         <main className="flex-1 p-10 overflow-y-auto">
 
           {/* Header */}
@@ -117,7 +106,7 @@ export const ProjectDetailPage:
                 Project Workspace
               </h1>
 
-              <p className="text-gray-400 mt-3 text-lg">
+              <p className="text-gray-400 mt-3">
                 Manage tasks professionally
               </p>
 
@@ -129,7 +118,7 @@ export const ProjectDetailPage:
 
           </div>
 
-          {/* REAL STATS */}
+          {/* REALTIME STATS */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mt-12">
 
             <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
@@ -196,12 +185,12 @@ export const ProjectDetailPage:
             </div>
 
             <TaskCreateEdit
-              projectId={projectId}
+              projectId={projectId!}
             />
 
           </div>
 
-          {/* Tasks */}
+          {/* Task List */}
           <div className="mt-16">
 
             <div className="flex items-center mb-8">
@@ -215,7 +204,7 @@ export const ProjectDetailPage:
             </div>
 
             <TaskList
-              projectId={projectId}
+              projectId={projectId!}
             />
 
           </div>

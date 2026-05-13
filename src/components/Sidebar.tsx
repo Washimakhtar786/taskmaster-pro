@@ -35,30 +35,6 @@ export const Sidebar: React.FC =
               </Link>
             </li>
 
-            <li>
-              <button
-                className="w-full text-left hover:bg-white/10 px-5 py-3 rounded-xl transition"
-              >
-                Teams
-              </button>
-            </li>
-
-            <li>
-              <button
-                className="w-full text-left hover:bg-white/10 px-5 py-3 rounded-xl transition"
-              >
-                Analytics
-              </button>
-            </li>
-
-            <li>
-              <button
-                className="w-full text-left hover:bg-white/10 px-5 py-3 rounded-xl transition"
-              >
-                Settings
-              </button>
-            </li>
-
           </ul>
 
         </nav>
