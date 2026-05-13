@@ -10,6 +10,9 @@ import {
   where,
   onSnapshot,
   serverTimestamp,
+  deleteDoc,
+  doc,
+  updateDoc,
 } from "firebase/firestore";
 
 import { Link } from "react-router-dom";
@@ -26,8 +29,8 @@ interface Project {
   description: string;
 }
 
-export const ProjectsPage:
-  React.FC = () => {
+export const ProjectsPage: React.FC =
+  () => {
     const { user } = useAuth();
 
     const [projects, setProjects] =
@@ -41,11 +44,17 @@ export const ProjectsPage:
       setDescription,
     ] = useState("");
 
+    const [editingId, setEditingId] =
+      useState<string | null>(
+        null
+      );
+
     useEffect(() => {
       if (!user) return;
 
       const q = query(
         collection(db, "projects"),
+
         where(
           "ownerId",
           "==",
@@ -105,6 +114,55 @@ export const ProjectsPage:
           );
 
           setName("");
+
+          setDescription("");
+
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+    const deleteProject =
+      async (
+        projectId: string
+      ) => {
+        try {
+          await deleteDoc(
+            doc(
+              db,
+              "projects",
+              projectId
+            )
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+    const editProject =
+      async (
+        e: React.FormEvent,
+        projectId: string
+      ) => {
+        e.preventDefault();
+
+        try {
+          await updateDoc(
+            doc(
+              db,
+              "projects",
+              projectId
+            ),
+            {
+              name,
+              description,
+            }
+          );
+
+          setEditingId(null);
+
+          setName("");
+
           setDescription("");
 
         } catch (error) {
@@ -138,16 +196,23 @@ export const ProjectsPage:
 
           </div>
 
-          {/* Create Project Form */}
+          {/* Create/Edit Project */}
           <div className="mt-12 bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-lg">
 
             <h2 className="text-3xl font-bold mb-8">
-              Create New Project
+              {editingId
+                ? "Edit Project"
+                : "Create New Project"}
             </h2>
 
             <form
-              onSubmit={
-                createProject
+              onSubmit={(e) =>
+                editingId
+                  ? editProject(
+                      e,
+                      editingId
+                    )
+                  : createProject(e)
               }
               className="space-y-6"
             >
@@ -177,18 +242,46 @@ export const ProjectsPage:
                 className="w-full bg-white/10 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none placeholder:text-gray-400 h-36"
               />
 
-              <button
-                type="submit"
-                className="bg-green-400 text-black px-8 py-4 rounded-2xl font-bold hover:bg-green-300 transition"
-              >
-                Create Project
-              </button>
+              <div className="flex items-center gap-4">
+
+                <button
+                  type="submit"
+                  className="bg-green-400 text-black px-8 py-4 rounded-2xl font-bold hover:bg-green-300 transition"
+                >
+                  {editingId
+                    ? "Update Project"
+                    : "Create Project"}
+                </button>
+
+                {editingId && (
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditingId(
+                        null
+                      );
+
+                      setName("");
+
+                      setDescription(
+                        ""
+                      );
+                    }}
+                    className="bg-white/10 px-8 py-4 rounded-2xl font-bold hover:bg-white/20 transition"
+                  >
+                    Cancel
+                  </button>
+
+                )}
+
+              </div>
 
             </form>
 
           </div>
 
-          {/* Projects Grid */}
+          {/* Projects */}
           <div className="mt-16">
 
             <div className="flex items-center justify-between mb-8">
@@ -223,6 +316,7 @@ export const ProjectsPage:
                       className="bg-white/5 border border-white/10 rounded-3xl p-8 hover:border-green-400/40 hover:scale-[1.02] transition-all duration-300 backdrop-blur-lg"
                     >
 
+                      {/* Header */}
                       <div className="flex items-center justify-between">
 
                         <h3 className="text-2xl font-bold">
@@ -235,6 +329,7 @@ export const ProjectsPage:
 
                       </div>
 
+                      {/* Description */}
                       <p className="text-gray-400 mt-5 leading-7">
                         {
                           project.description ||
@@ -242,11 +337,54 @@ export const ProjectsPage:
                         }
                       </p>
 
-                      <div className="mt-8 flex items-center justify-between">
+                      {/* Actions */}
+                      <div className="mt-8 flex items-center justify-between gap-3">
 
                         <span className="text-sm text-green-400 font-semibold">
                           Open Workspace →
                         </span>
+
+                        <div className="flex items-center gap-3">
+
+                          <button
+                            onClick={(
+                              e
+                            ) => {
+                              e.preventDefault();
+
+                              setEditingId(
+                                project.id
+                              );
+
+                              setName(
+                                project.name
+                              );
+
+                              setDescription(
+                                project.description
+                              );
+                            }}
+                            className="bg-yellow-500/20 text-yellow-400 px-4 py-2 rounded-xl hover:bg-yellow-500/30 transition text-sm"
+                          >
+                            Edit
+                          </button>
+
+                          <button
+                            onClick={(
+                              e
+                            ) => {
+                              e.preventDefault();
+
+                              deleteProject(
+                                project.id
+                              );
+                            }}
+                            className="bg-red-500/20 text-red-400 px-4 py-2 rounded-xl hover:bg-red-500/30 transition text-sm"
+                          >
+                            Delete
+                          </button>
+
+                        </div>
 
                       </div>
 

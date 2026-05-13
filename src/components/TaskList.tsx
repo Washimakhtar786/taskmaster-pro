@@ -14,6 +14,10 @@ import {
 
 import { db } from "../api/firebase";
 
+import { CommentForm } from "./CommentForm";
+
+import { CommentList } from "./CommentList";
+
 interface Task {
   id: string;
   title: string;
@@ -102,7 +106,7 @@ export const TaskList: React.FC<
 
       ) : (
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 gap-8">
 
           {tasks.map((task) => (
 
@@ -111,64 +115,91 @@ export const TaskList: React.FC<
               className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-lg hover:border-green-400/30 transition"
             >
 
-              {/* Top */}
-              <div className="flex items-center justify-between">
-
-                <h3 className="text-2xl font-bold text-white">
-                  {task.title}
-                </h3>
-
-                <span className="bg-green-400/20 text-green-400 px-4 py-2 rounded-xl text-sm font-semibold capitalize">
-                  {task.priority}
-                </span>
-
-              </div>
-
-              {/* Description */}
-              <p className="text-gray-400 mt-5 leading-7">
-                {task.description ||
-                  "No description"}
-              </p>
-
-              {/* Meta */}
-              <div className="grid grid-cols-2 gap-6 mt-8">
+              {/* Header */}
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
 
                 <div>
 
-                  <p className="text-sm text-gray-400">
-                    Status
-                  </p>
+                  <h3 className="text-3xl font-bold text-white">
+                    {task.title}
+                  </h3>
 
-                  <p className="font-semibold mt-2 capitalize text-white">
-                    {task.status}
+                  <p className="text-gray-400 mt-3 leading-7">
+                    {task.description ||
+                      "No description"}
                   </p>
 
                 </div>
 
-                <div>
+                <div className="flex items-center gap-3">
+
+                  <span className="bg-green-400/20 text-green-400 px-4 py-2 rounded-xl text-sm font-semibold capitalize">
+                    {task.priority}
+                  </span>
+
+                  <span
+                    className={`px-4 py-2 rounded-xl text-sm font-semibold capitalize
+                    ${
+                      task.status ===
+                      "completed"
+                        ? "bg-green-500/20 text-green-400"
+                        : task.status ===
+                          "in-progress"
+                        ? "bg-yellow-500/20 text-yellow-400"
+                        : "bg-red-500/20 text-red-400"
+                    }`}
+                  >
+                    {task.status}
+                  </span>
+
+                </div>
+
+              </div>
+
+              {/* Info Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-8">
+
+                <div className="bg-white/5 rounded-2xl p-5 border border-white/10">
+
+                  <p className="text-sm text-gray-400">
+                    Assigned To
+                  </p>
+
+                  <p className="text-white font-semibold mt-2 break-all">
+                    {task.assignedTo}
+                  </p>
+
+                </div>
+
+                <div className="bg-white/5 rounded-2xl p-5 border border-white/10">
 
                   <p className="text-sm text-gray-400">
                     Due Date
                   </p>
 
-                  <p className="font-semibold mt-2 text-white">
+                  <p className="text-white font-semibold mt-2">
                     {task.dueDate ||
                       "N/A"}
                   </p>
 
                 </div>
 
+                <div className="bg-white/5 rounded-2xl p-5 border border-white/10">
+
+                  <p className="text-sm text-gray-400">
+                    Task Status
+                  </p>
+
+                  <p className="text-white font-semibold mt-2 capitalize">
+                    {task.status}
+                  </p>
+
+                </div>
+
               </div>
 
-              {/* Footer */}
-              <div className="flex items-center justify-between mt-8">
-
-                <div className="text-sm text-gray-400">
-                  Assigned:
-                  <span className="text-white ml-2">
-                    {task.assignedTo}
-                  </span>
-                </div>
+              {/* Actions */}
+              <div className="flex justify-end mt-8">
 
                 <button
                   onClick={() =>
@@ -176,10 +207,27 @@ export const TaskList: React.FC<
                       task.id
                     )
                   }
-                  className="bg-red-500/20 text-red-400 px-5 py-2 rounded-xl hover:bg-red-500/30 transition"
+                  className="bg-red-500/20 text-red-400 px-6 py-3 rounded-2xl hover:bg-red-500/30 transition font-semibold"
                 >
-                  Delete
+                  Delete Task
                 </button>
+
+              </div>
+
+              {/* Comments Section */}
+              <div className="mt-10 border-t border-white/10 pt-8">
+
+                <h4 className="text-2xl font-bold text-white mb-6">
+                  Collaboration
+                </h4>
+
+                <CommentForm
+                  taskId={task.id}
+                />
+
+                <CommentList
+                  taskId={task.id}
+                />
 
               </div>
 
