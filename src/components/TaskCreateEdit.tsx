@@ -16,6 +16,8 @@ import { db } from "../api/firebase";
 
 import { useAuth } from "../contexts/AuthContext";
 
+import { notifyUser } from "../utils/notifyUser";
+
 interface TaskForm {
   title: string;
   description?: string;
@@ -87,21 +89,31 @@ export const TaskCreateEdit: React.FC<
     if (!user) return;
 
     try {
+
       if (taskId) {
+
         const taskRef = doc(
           db,
           "tasks",
           taskId
         );
 
-        await updateDoc(taskRef, {
-          ...data,
-          updatedAt:
-            serverTimestamp(),
-        });
+        await updateDoc(
+          taskRef,
+          {
+            ...data,
+            updatedAt:
+              serverTimestamp(),
+          }
+        );
+
       } else {
+
         await addDoc(
-          collection(db, "tasks"),
+          collection(
+            db,
+            "tasks"
+          ),
           {
             ...data,
             projectId,
@@ -111,6 +123,13 @@ export const TaskCreateEdit: React.FC<
               serverTimestamp(),
           }
         );
+
+        // 🔥 Trigger Notification
+        await notifyUser(
+          data.assignedTo,
+          `You were assigned a new task: ${data.title}`
+        );
+
       }
 
       reset();
@@ -128,10 +147,12 @@ export const TaskCreateEdit: React.FC<
       );
 
     } catch (error) {
+
       alert(
         "Failed to save task: " +
           (error as Error).message
       );
+
     }
   };
 
