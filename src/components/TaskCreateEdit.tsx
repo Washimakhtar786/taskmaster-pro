@@ -22,21 +22,27 @@ interface TaskForm {
   title: string;
   description?: string;
   assignedTo: string;
+
   status:
     | "pending"
     | "in-progress"
     | "completed";
+
   priority:
     | "low"
     | "medium"
     | "high";
+
   dueDate: string;
 }
 
 interface Props {
   projectId: string;
+
   taskId?: string;
+
   existingData?: TaskForm;
+
   onComplete?: () => void;
 }
 
@@ -48,7 +54,9 @@ export const TaskCreateEdit: React.FC<
   existingData,
   onComplete,
 }) => {
-  const { user } = useAuth();
+
+  const { user } =
+    useAuth();
 
   const {
     register,
@@ -68,28 +76,38 @@ export const TaskCreateEdit: React.FC<
   });
 
   useEffect(() => {
+
     if (existingData) {
+
       for (const [
         key,
         value,
       ] of Object.entries(
         existingData
       )) {
+
         setValue(
           key as keyof TaskForm,
           value as never
         );
+
       }
+
     }
+
   }, [existingData, setValue]);
 
   const onSubmit = async (
     data: TaskForm
   ) => {
+
     if (!user) return;
 
     try {
 
+      /* =========================
+         UPDATE TASK
+      ========================== */
       if (taskId) {
 
         const taskRef = doc(
@@ -102,6 +120,7 @@ export const TaskCreateEdit: React.FC<
           taskRef,
           {
             ...data,
+
             updatedAt:
               serverTimestamp(),
           }
@@ -109,6 +128,9 @@ export const TaskCreateEdit: React.FC<
 
       } else {
 
+        /* =========================
+           CREATE TASK
+        ========================== */
         await addDoc(
           collection(
             db,
@@ -116,15 +138,24 @@ export const TaskCreateEdit: React.FC<
           ),
           {
             ...data,
+
             projectId,
+
+            /* 🔥 IMPORTANT */
+            projectOwnerId:
+              user.uid,
+
             createdAt:
               serverTimestamp(),
+
             updatedAt:
               serverTimestamp(),
           }
         );
 
-        // 🔥 Trigger Notification
+        /* =========================
+           NOTIFICATION
+        ========================== */
         await notifyUser(
           data.assignedTo,
           `You were assigned a new task: ${data.title}`
@@ -154,6 +185,7 @@ export const TaskCreateEdit: React.FC<
       );
 
     }
+
   };
 
   return (
@@ -198,7 +230,7 @@ export const TaskCreateEdit: React.FC<
 
       </div>
 
-      {/* Assigned To */}
+      {/* Assign To */}
       <div>
 
         <label className="block text-sm text-gray-400 mb-2">
@@ -307,7 +339,7 @@ export const TaskCreateEdit: React.FC<
 
       </div>
 
-      {/* Submit Button */}
+      {/* Submit */}
       <button
         type="submit"
         className="w-full bg-green-400 text-black py-4 rounded-2xl font-bold hover:bg-green-300 hover:scale-[1.01] transition-all duration-300"
