@@ -210,9 +210,13 @@ export const DashboardPage: React.FC =
             tasks.forEach(
               (task: any) => {
 
-                counts[
-                  task.status
-                ]++;
+                const status =
+  task.status as
+    | "pending"
+    | "in-progress"
+    | "completed";
+
+counts[status]++;
 
               }
             );
