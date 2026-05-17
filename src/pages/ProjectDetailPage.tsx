@@ -29,6 +29,7 @@ interface Task {
 
 export const ProjectDetailPage: React.FC =
   () => {
+
     const { projectId } =
       useParams<{
         projectId: string;
@@ -38,6 +39,7 @@ export const ProjectDetailPage: React.FC =
       useState<Task[]>([]);
 
     useEffect(() => {
+
       if (!projectId) return;
 
       const q = query(
@@ -53,6 +55,7 @@ export const ProjectDetailPage: React.FC =
         onSnapshot(
           q,
           (snapshot) => {
+
             const tasksData =
               snapshot.docs.map(
                 (doc) =>
@@ -60,10 +63,12 @@ export const ProjectDetailPage: React.FC =
               );
 
             setTasks(tasksData);
+
           }
         );
 
       return () => unsubscribe();
+
     }, [projectId]);
 
     const totalTasks =
@@ -91,79 +96,80 @@ export const ProjectDetailPage: React.FC =
       ).length;
 
     return (
+
       <div className="flex min-h-screen bg-[#071B2A] text-white">
 
         <Sidebar />
 
-        <main className="flex-1 p-10 overflow-y-auto">
+        <main className="flex-1 p-4 md:p-10 pt-24 md:pt-10 overflow-y-auto">
 
           {/* Header */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
 
             <div>
 
-              <h1 className="text-5xl font-extrabold">
+              <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">
                 Project Workspace
               </h1>
 
-              <p className="text-gray-400 mt-3">
+              <p className="text-gray-400 mt-3 text-base md:text-lg">
                 Manage tasks professionally
               </p>
 
             </div>
 
-            <div className="bg-green-400/20 text-green-400 px-6 py-3 rounded-2xl font-bold">
+            <div className="w-full md:w-auto bg-green-400/20 text-green-400 px-6 py-3 rounded-2xl font-bold text-center">
               Active Project
             </div>
 
           </div>
 
           {/* REALTIME STATS */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 mt-10 md:mt-12">
 
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8">
 
               <p className="text-gray-400">
                 Total Tasks
               </p>
 
-              <h2 className="text-5xl font-bold mt-4 text-green-400">
+              <h2 className="text-4xl md:text-5xl font-bold mt-4 text-green-400">
                 {totalTasks}
               </h2>
 
             </div>
 
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8">
 
               <p className="text-gray-400">
                 Completed
               </p>
 
-              <h2 className="text-5xl font-bold mt-4 text-green-400">
+              <h2 className="text-4xl md:text-5xl font-bold mt-4 text-green-400">
                 {completedTasks}
               </h2>
 
             </div>
 
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8">
 
               <p className="text-gray-400">
                 Pending
               </p>
 
-              <h2 className="text-5xl font-bold mt-4 text-green-400">
+              <h2 className="text-4xl md:text-5xl font-bold mt-4 text-green-400">
                 {pendingTasks}
               </h2>
 
             </div>
 
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8">
 
               <p className="text-gray-400">
                 In Progress
               </p>
 
-              <h2 className="text-5xl font-bold mt-4 text-green-400">
+              <h2 className="text-4xl md:text-5xl font-bold mt-4 text-green-400">
                 {progressTasks}
               </h2>
 
@@ -172,15 +178,15 @@ export const ProjectDetailPage: React.FC =
           </div>
 
           {/* Create Task */}
-          <div className="mt-14">
+          <div className="mt-12 md:mt-14">
 
             <div className="flex items-center mb-8">
 
-              <h2 className="text-3xl font-bold">
+              <h2 className="text-2xl md:text-3xl font-bold whitespace-nowrap">
                 Create Task
               </h2>
 
-              <div className="h-[2px] flex-1 bg-white/10 ml-6"></div>
+              <div className="h-[2px] flex-1 bg-white/10 ml-4 md:ml-6"></div>
 
             </div>
 
@@ -191,15 +197,15 @@ export const ProjectDetailPage: React.FC =
           </div>
 
           {/* Task List */}
-          <div className="mt-16">
+          <div className="mt-14 md:mt-16">
 
             <div className="flex items-center mb-8">
 
-              <h2 className="text-3xl font-bold">
+              <h2 className="text-2xl md:text-3xl font-bold whitespace-nowrap">
                 Project Tasks
               </h2>
 
-              <div className="h-[2px] flex-1 bg-white/10 ml-6"></div>
+              <div className="h-[2px] flex-1 bg-white/10 ml-4 md:ml-6"></div>
 
             </div>
 
@@ -212,5 +218,7 @@ export const ProjectDetailPage: React.FC =
         </main>
 
       </div>
+
     );
+
   };

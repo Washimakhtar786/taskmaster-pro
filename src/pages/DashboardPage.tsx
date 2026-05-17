@@ -81,6 +81,7 @@ export const DashboardPage: React.FC =
           );
 
           return;
+
         }
 
         try {
@@ -105,11 +106,6 @@ export const DashboardPage: React.FC =
                   serverTimestamp(),
               }
             );
-
-          console.log(
-            "Project Created:",
-            docRef.id
-          );
 
           navigate(
             `/projects/${docRef.id}`
@@ -211,12 +207,12 @@ export const DashboardPage: React.FC =
               (task: any) => {
 
                 const status =
-  task.status as
-    | "pending"
-    | "in-progress"
-    | "completed";
+                  task.status as
+                    | "pending"
+                    | "in-progress"
+                    | "completed";
 
-counts[status]++;
+                counts[status]++;
 
               }
             );
@@ -258,24 +254,25 @@ counts[status]++;
     }, [user]);
 
     return (
+
       <div className="flex min-h-screen bg-[#071B2A] text-white">
 
         {/* Sidebar */}
         <Sidebar />
 
         {/* Main */}
-        <main className="flex-1 p-10 overflow-y-auto">
+        <main className="flex-1 p-4 md:p-10 pt-24 md:pt-10 overflow-y-auto">
 
           {/* Header */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
 
             <div>
 
-              <h1 className="text-5xl font-extrabold">
+              <h1 className="text-4xl md:text-5xl font-extrabold">
                 Dashboard
               </h1>
 
-              <p className="text-gray-400 mt-3 text-lg">
+              <p className="text-gray-400 mt-3 text-base md:text-lg break-all">
                 Welcome back,
                 {" "}
                 {user?.email}
@@ -288,7 +285,7 @@ counts[status]++;
               onClick={
                 createProject
               }
-              className="bg-green-400 text-black px-6 py-3 rounded-2xl font-bold hover:bg-green-300 transition shadow-lg shadow-green-400/20"
+              className="w-full md:w-auto bg-green-400 text-black px-6 py-3 rounded-2xl font-bold hover:bg-green-300 transition shadow-lg shadow-green-400/20"
             >
               Create Project
             </button>
@@ -296,42 +293,42 @@ counts[status]++;
           </div>
 
           {/* Analytics Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-10 md:mt-12">
 
             {/* Total Projects */}
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-lg hover:border-green-400/30 transition">
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 backdrop-blur-lg hover:border-green-400/30 transition">
 
-              <h2 className="text-gray-400 text-lg">
+              <h2 className="text-gray-400 text-base md:text-lg">
                 Total Projects
               </h2>
 
-              <p className="text-6xl font-bold mt-5 text-green-400">
+              <p className="text-4xl md:text-6xl font-bold mt-5 text-green-400">
                 {totalProjects}
               </p>
 
             </div>
 
             {/* Active Tasks */}
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-lg hover:border-green-400/30 transition">
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 backdrop-blur-lg hover:border-green-400/30 transition">
 
-              <h2 className="text-gray-400 text-lg">
+              <h2 className="text-gray-400 text-base md:text-lg">
                 Active Tasks
               </h2>
 
-              <p className="text-6xl font-bold mt-5 text-green-400">
+              <p className="text-4xl md:text-6xl font-bold mt-5 text-green-400">
                 {totalTasks}
               </p>
 
             </div>
 
             {/* Completed Tasks */}
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-lg hover:border-green-400/30 transition">
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 backdrop-blur-lg hover:border-green-400/30 transition">
 
-              <h2 className="text-gray-400 text-lg">
+              <h2 className="text-gray-400 text-base md:text-lg">
                 Completed Tasks
               </h2>
 
-              <p className="text-6xl font-bold mt-5 text-green-400">
+              <p className="text-4xl md:text-6xl font-bold mt-5 text-green-400">
                 {
                   taskStatusCounts[2]
                     .value
@@ -343,7 +340,7 @@ counts[status]++;
           </div>
 
           {/* Charts */}
-          <div className="mt-16">
+          <div className="mt-12 md:mt-16">
 
             <DashboardCharts
               taskStatusCounts={
@@ -356,5 +353,7 @@ counts[status]++;
         </main>
 
       </div>
+
     );
+
   };

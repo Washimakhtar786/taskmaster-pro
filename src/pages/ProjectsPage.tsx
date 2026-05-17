@@ -31,7 +31,9 @@ interface Project {
 
 export const ProjectsPage: React.FC =
   () => {
-    const { user } = useAuth();
+
+    const { user } =
+      useAuth();
 
     const [projects, setProjects] =
       useState<Project[]>([]);
@@ -50,6 +52,7 @@ export const ProjectsPage: React.FC =
       );
 
     useEffect(() => {
+
       if (!user) return;
 
       const q = query(
@@ -66,6 +69,7 @@ export const ProjectsPage: React.FC =
         onSnapshot(
           q,
           (snapshot) => {
+
             const projectData =
               snapshot.docs.map(
                 (doc) => ({
@@ -80,16 +84,19 @@ export const ProjectsPage: React.FC =
             setProjects(
               projectData
             );
+
           }
         );
 
       return () => unsubscribe();
+
     }, [user]);
 
     const createProject =
       async (
         e: React.FormEvent
       ) => {
+
         e.preventDefault();
 
         if (!user) return;
@@ -98,6 +105,7 @@ export const ProjectsPage: React.FC =
           return;
 
         try {
+
           await addDoc(
             collection(
               db,
@@ -118,15 +126,20 @@ export const ProjectsPage: React.FC =
           setDescription("");
 
         } catch (error) {
+
           console.log(error);
+
         }
+
       };
 
     const deleteProject =
       async (
         projectId: string
       ) => {
+
         try {
+
           await deleteDoc(
             doc(
               db,
@@ -134,9 +147,13 @@ export const ProjectsPage: React.FC =
               projectId
             )
           );
+
         } catch (error) {
+
           console.log(error);
+
         }
+
       };
 
     const editProject =
@@ -144,9 +161,11 @@ export const ProjectsPage: React.FC =
         e: React.FormEvent,
         projectId: string
       ) => {
+
         e.preventDefault();
 
         try {
+
           await updateDoc(
             doc(
               db,
@@ -166,29 +185,33 @@ export const ProjectsPage: React.FC =
           setDescription("");
 
         } catch (error) {
+
           console.log(error);
+
         }
+
       };
 
     return (
+
       <div className="flex min-h-screen bg-[#071B2A] text-white">
 
         {/* Sidebar */}
         <Sidebar />
 
         {/* Main */}
-        <main className="flex-1 p-10 overflow-y-auto">
+        <main className="flex-1 p-4 md:p-10 pt-24 md:pt-10 overflow-y-auto">
 
           {/* Header */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
 
             <div>
 
-              <h1 className="text-5xl font-extrabold">
+              <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">
                 Projects
               </h1>
 
-              <p className="text-gray-400 mt-3 text-lg">
+              <p className="text-gray-400 mt-3 text-base md:text-lg">
                 Manage all your projects professionally
               </p>
 
@@ -197,12 +220,14 @@ export const ProjectsPage: React.FC =
           </div>
 
           {/* Create/Edit Project */}
-          <div className="mt-12 bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-lg">
+          <div className="mt-10 md:mt-12 bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 backdrop-blur-lg">
 
-            <h2 className="text-3xl font-bold mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold mb-8 leading-tight">
+
               {editingId
                 ? "Edit Project"
                 : "Create New Project"}
+
             </h2>
 
             <form
@@ -226,7 +251,7 @@ export const ProjectsPage: React.FC =
                     e.target.value
                   )
                 }
-                className="w-full bg-white/10 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none placeholder:text-gray-400"
+                className="w-full bg-white/10 border border-white/10 rounded-2xl px-5 md:px-6 py-4 text-white outline-none placeholder:text-gray-400"
               />
 
               <textarea
@@ -239,18 +264,20 @@ export const ProjectsPage: React.FC =
                     e.target.value
                   )
                 }
-                className="w-full bg-white/10 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none placeholder:text-gray-400 h-36"
+                className="w-full bg-white/10 border border-white/10 rounded-2xl px-5 md:px-6 py-4 text-white outline-none placeholder:text-gray-400 h-36"
               />
 
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
 
                 <button
                   type="submit"
-                  className="bg-green-400 text-black px-8 py-4 rounded-2xl font-bold hover:bg-green-300 transition"
+                  className="w-full sm:w-auto bg-green-400 text-black px-8 py-4 rounded-2xl font-bold hover:bg-green-300 transition"
                 >
+
                   {editingId
                     ? "Update Project"
                     : "Create Project"}
+
                 </button>
 
                 {editingId && (
@@ -258,6 +285,7 @@ export const ProjectsPage: React.FC =
                   <button
                     type="button"
                     onClick={() => {
+
                       setEditingId(
                         null
                       );
@@ -267,8 +295,9 @@ export const ProjectsPage: React.FC =
                       setDescription(
                         ""
                       );
+
                     }}
-                    className="bg-white/10 px-8 py-4 rounded-2xl font-bold hover:bg-white/20 transition"
+                    className="w-full sm:w-auto bg-white/10 px-8 py-4 rounded-2xl font-bold hover:bg-white/20 transition"
                   >
                     Cancel
                   </button>
@@ -282,28 +311,28 @@ export const ProjectsPage: React.FC =
           </div>
 
           {/* Projects */}
-          <div className="mt-16">
+          <div className="mt-14 md:mt-16">
 
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center mb-8">
 
-              <h2 className="text-3xl font-bold">
+              <h2 className="text-2xl md:text-3xl font-bold whitespace-nowrap">
                 Your Projects
               </h2>
 
-              <div className="h-[2px] flex-1 bg-white/10 ml-6"></div>
+              <div className="h-[2px] flex-1 bg-white/10 ml-4 md:ml-6"></div>
 
             </div>
 
             {projects.length ===
             0 ? (
 
-              <div className="bg-white/5 border border-white/10 rounded-3xl p-10 text-center text-gray-400">
+              <div className="bg-white/5 border border-white/10 rounded-3xl p-8 md:p-10 text-center text-gray-400">
                 No projects found.
               </div>
 
             ) : (
 
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
 
                 {projects.map(
                   (project) => (
@@ -313,24 +342,24 @@ export const ProjectsPage: React.FC =
                         project.id
                       }
                       to={`/projects/${project.id}`}
-                      className="bg-white/5 border border-white/10 rounded-3xl p-8 hover:border-green-400/40 hover:scale-[1.02] transition-all duration-300 backdrop-blur-lg"
+                      className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 hover:border-green-400/40 hover:scale-[1.02] transition-all duration-300 backdrop-blur-lg"
                     >
 
                       {/* Header */}
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-start justify-between gap-4">
 
-                        <h3 className="text-2xl font-bold">
+                        <h3 className="text-xl md:text-2xl font-bold break-words">
                           {
                             project.name
                           }
                         </h3>
 
-                        <div className="w-4 h-4 rounded-full bg-green-400"></div>
+                        <div className="w-4 h-4 rounded-full bg-green-400 flex-shrink-0"></div>
 
                       </div>
 
                       {/* Description */}
-                      <p className="text-gray-400 mt-5 leading-7">
+                      <p className="text-gray-400 mt-5 leading-7 break-words">
                         {
                           project.description ||
                           "No description"
@@ -338,7 +367,7 @@ export const ProjectsPage: React.FC =
                       </p>
 
                       {/* Actions */}
-                      <div className="mt-8 flex items-center justify-between gap-3">
+                      <div className="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 
                         <span className="text-sm text-green-400 font-semibold">
                           Open Workspace →
@@ -350,6 +379,7 @@ export const ProjectsPage: React.FC =
                             onClick={(
                               e
                             ) => {
+
                               e.preventDefault();
 
                               setEditingId(
@@ -363,6 +393,7 @@ export const ProjectsPage: React.FC =
                               setDescription(
                                 project.description
                               );
+
                             }}
                             className="bg-yellow-500/20 text-yellow-400 px-4 py-2 rounded-xl hover:bg-yellow-500/30 transition text-sm"
                           >
@@ -373,11 +404,13 @@ export const ProjectsPage: React.FC =
                             onClick={(
                               e
                             ) => {
+
                               e.preventDefault();
 
                               deleteProject(
                                 project.id
                               );
+
                             }}
                             className="bg-red-500/20 text-red-400 px-4 py-2 rounded-xl hover:bg-red-500/30 transition text-sm"
                           >
@@ -402,5 +435,7 @@ export const ProjectsPage: React.FC =
         </main>
 
       </div>
+
     );
+
   };

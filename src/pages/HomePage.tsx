@@ -6,24 +6,28 @@ import { motion } from "framer-motion";
 
 export const HomePage: React.FC =
   () => {
+
     return (
+
       <div className="min-h-screen bg-[#071B2A] text-white overflow-hidden relative">
 
         {/* Background Glow */}
-        <div className="absolute top-[-100px] left-[-100px] w-[400px] h-[400px] bg-green-400/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-[-100px] left-[-100px] w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-green-400/20 rounded-full blur-3xl"></div>
 
-        <div className="absolute bottom-[-100px] right-[-100px] w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-[-100px] right-[-100px] w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-blue-500/20 rounded-full blur-3xl"></div>
 
         {/* Navbar */}
         <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-lg bg-white/5 border-b border-white/10">
 
-          <div className="max-w-7xl mx-auto flex items-center justify-between px-8 py-5">
+          <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 py-4 md:py-5">
 
-            <h1 className="text-3xl font-extrabold text-green-400 tracking-wide">
+            {/* Logo */}
+            <h1 className="text-2xl md:text-3xl font-extrabold text-green-400 tracking-wide">
               TaskMaster Pro
             </h1>
 
-            <ul className="hidden md:flex items-center gap-10 font-medium text-white">
+            {/* Desktop Menu */}
+            <ul className="hidden lg:flex items-center gap-10 font-medium text-white">
 
               <li className="hover:text-green-400 transition cursor-pointer">
                 Home
@@ -43,18 +47,19 @@ export const HomePage: React.FC =
 
             </ul>
 
-            <div className="flex items-center gap-4">
+            {/* Buttons */}
+            <div className="flex items-center gap-3">
 
               <Link
                 to="/login"
-                className="text-white hover:text-green-400 transition"
+                className="text-sm md:text-base text-white hover:text-green-400 transition"
               >
                 Login
               </Link>
 
               <Link
                 to="/register"
-                className="bg-green-400 text-black px-5 py-2 rounded-xl font-bold hover:bg-green-300 transition shadow-lg shadow-green-400/20"
+                className="bg-green-400 text-black px-4 md:px-5 py-2 rounded-xl font-bold hover:bg-green-300 transition shadow-lg shadow-green-400/20 text-sm md:text-base"
               >
                 Get Started
               </Link>
@@ -66,7 +71,7 @@ export const HomePage: React.FC =
         </nav>
 
         {/* Hero Section */}
-        <section className="pt-40 flex flex-col items-center justify-center text-center px-6 py-32 relative z-10">
+        <section className="pt-36 md:pt-40 flex flex-col items-center justify-center text-center px-4 md:px-6 py-20 md:py-32 relative z-10">
 
           {/* Floating Gradients */}
           <motion.div
@@ -77,7 +82,7 @@ export const HomePage: React.FC =
               duration: 6,
               repeat: Infinity,
             }}
-            className="absolute top-20 left-20 w-72 h-72 bg-green-400/20 rounded-full blur-3xl"
+            className="absolute top-20 left-0 md:left-20 w-52 md:w-72 h-52 md:h-72 bg-green-400/20 rounded-full blur-3xl"
           />
 
           <motion.div
@@ -88,7 +93,7 @@ export const HomePage: React.FC =
               duration: 7,
               repeat: Infinity,
             }}
-            className="absolute bottom-20 right-20 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl"
+            className="absolute bottom-20 right-0 md:right-20 w-52 md:w-72 h-52 md:h-72 bg-blue-500/20 rounded-full blur-3xl"
           />
 
           {/* Heading */}
@@ -104,10 +109,11 @@ export const HomePage: React.FC =
             transition={{
               duration: 1,
             }}
-            className="text-5xl md:text-7xl font-extrabold leading-tight max-w-5xl"
+            className="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight max-w-5xl"
           >
 
             Manage Projects
+
             <span className="text-green-400">
               {" "}Smarter
             </span>
@@ -128,7 +134,7 @@ export const HomePage: React.FC =
               duration: 1,
               delay: 0.3,
             }}
-            className="mt-8 text-lg text-gray-300 max-w-2xl leading-8"
+            className="mt-6 md:mt-8 text-base md:text-lg text-gray-300 max-w-2xl leading-7 md:leading-8"
           >
 
             TaskMaster Pro helps teams manage projects,
@@ -151,17 +157,17 @@ export const HomePage: React.FC =
               duration: 1,
               delay: 0.6,
             }}
-            className="mt-10 flex flex-col sm:flex-row gap-5"
+            className="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4 md:gap-5 w-full sm:w-auto"
           >
 
             <Link
               to="/register"
-              className="bg-green-400 text-black px-8 py-4 rounded-xl font-bold hover:bg-green-300 transition shadow-2xl shadow-green-400/40"
+              className="bg-green-400 text-black px-6 md:px-8 py-3 md:py-4 rounded-xl font-bold hover:bg-green-300 transition shadow-2xl shadow-green-400/40 text-center"
             >
               Get Started
             </Link>
 
-            <button className="border border-white/20 px-8 py-4 rounded-xl font-bold hover:bg-white/10 transition">
+            <button className="border border-white/20 px-6 md:px-8 py-3 md:py-4 rounded-xl font-bold hover:bg-white/10 transition">
               Live Demo
             </button>
 
@@ -181,17 +187,18 @@ export const HomePage: React.FC =
               duration: 1,
               delay: 0.9,
             }}
-            className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl"
+            className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full max-w-5xl"
           >
 
+            {/* Card 1 */}
             <motion.div
               whileHover={{
                 scale: 1.05,
               }}
-              className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-lg"
+              className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-lg"
             >
 
-              <h2 className="text-4xl font-bold text-green-400">
+              <h2 className="text-3xl md:text-4xl font-bold text-green-400">
                 10K+
               </h2>
 
@@ -201,14 +208,15 @@ export const HomePage: React.FC =
 
             </motion.div>
 
+            {/* Card 2 */}
             <motion.div
               whileHover={{
                 scale: 1.05,
               }}
-              className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-lg"
+              className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-lg"
             >
 
-              <h2 className="text-4xl font-bold text-green-400">
+              <h2 className="text-3xl md:text-4xl font-bold text-green-400">
                 50K+
               </h2>
 
@@ -218,14 +226,15 @@ export const HomePage: React.FC =
 
             </motion.div>
 
+            {/* Card 3 */}
             <motion.div
               whileHover={{
                 scale: 1.05,
               }}
-              className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-lg"
+              className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-lg"
             >
 
-              <h2 className="text-4xl font-bold text-green-400">
+              <h2 className="text-3xl md:text-4xl font-bold text-green-400">
                 99.9%
               </h2>
 
@@ -241,4 +250,5 @@ export const HomePage: React.FC =
 
       </div>
     );
+
   };
